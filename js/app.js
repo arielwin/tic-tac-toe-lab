@@ -39,7 +39,9 @@ const init = () => {
     // console.log('init called')
 
     board = ['','','','','','','','','']
-
+    winner = false
+    tie = false
+    turn = 'X'
     render()
 }
 
@@ -60,7 +62,7 @@ function updateBoard() {
 
 updateMessage = () => {
 
-    // console.log('updateMessage called')
+    console.log('updateMessage called')
 
     if (winner === false && tie === false) {
         messageEl.textContent = `It is ${turn}'s turn!`
@@ -69,11 +71,15 @@ updateMessage = () => {
     } else {
         messageEl.textContent = `Congrats, ${turn} won the game!`
     }
+    //console.log(`turn${turn}, winner state: ${winner}, tie state ${tie}`)
 
 }
 
 function handleClick(event) {
     const squareIndex = event.target.id
+    if (board[squareIndex] !== '' || winner){
+        return
+    }
     placePiece(squareIndex)
     checkForWinner(board)
     checkForTie(board)
@@ -139,6 +145,13 @@ function switchPlayerTurn() {
     }
 }
 
+function reset() {
+    init()
+    squareEls.forEach((sqr) => {
+        sqr.innerText =''
+    })
+}
+
 //4) The state of the game should be rendered to the user.
 
 //6) Handle a player clicking a square with a `handleClick` function.
@@ -152,12 +165,11 @@ squareEls.forEach((square) => {
     square.addEventListener('click', handleClick)
 })
 
-resetBtnEl.addEventListener('click', init)
+resetBtnEl.addEventListener('click', reset)
 
 placePiece()
-
-
 init()
+
 
 
 
